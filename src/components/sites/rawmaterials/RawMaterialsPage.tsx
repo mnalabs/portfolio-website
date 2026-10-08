@@ -37,8 +37,30 @@ export function RawMaterialsPage({ initialIndex = 0 }: { initialIndex?: number }
   /* open at the routed section (instant, before the intro reveals the page) */
   useEffect(() => {
     const c = contentRef.current;
-    const el = c?.querySelector<HTMLElement>(`#${IDS[initialIndex]}`);
-    if (c && el && initialIndex > 0) c.scrollTop = el.offsetTop - c.offsetTop;
+    if (!c || initialIndex === 0) return;
+    let touched = false;
+    const place = () => {
+      const el = c.querySelector<HTMLElement>(`#${IDS[initialIndex]}`);
+      if (!touched && el) c.scrollTop = el.offsetTop - c.offsetTop;
+    };
+    const stop = () => {
+      touched = true;
+    };
+    place();
+    /* page height can still change while fonts/media load; keep the target until the visitor scrolls */
+    document.fonts?.ready.then(place);
+    window.addEventListener("load", place);
+    const ro = new ResizeObserver(place);
+    Array.from(c.children).forEach((child) => ro.observe(child));
+    const events = ["wheel", "touchstart", "keydown", "pointerdown"] as const;
+    events.forEach((e) => c.addEventListener(e, stop, { passive: true }));
+    const timer = window.setTimeout(stop, 4000);
+    return () => {
+      ro.disconnect();
+      window.clearTimeout(timer);
+      window.removeEventListener("load", place);
+      events.forEach((e) => c.removeEventListener(e, stop));
+    };
   }, [initialIndex]);
 
   /* keep the URL in step with the active section */
