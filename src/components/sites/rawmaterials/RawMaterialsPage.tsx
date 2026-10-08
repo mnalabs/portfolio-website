@@ -24,6 +24,15 @@ const IDS = NAV.map((n) => n.id);
 
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
+/* On phones/tablets the document itself scrolls (so iOS Safari/Chrome can collapse their toolbars);
+   on desktop the inner .rm-content panel scrolls. */
+const DOC_SCROLL_MQ = "(max-width: 1023px)";
+const isDocScroll = () => window.matchMedia(DOC_SCROLL_MQ).matches;
+const scrollerOf = (content: HTMLElement | null): HTMLElement | null =>
+  isDocScroll() ? (document.scrollingElement as HTMLElement | null) : content;
+const sectionTop = (el: HTMLElement, content: HTMLElement) =>
+  isDocScroll() ? el.getBoundingClientRect().top + window.scrollY : el.offsetTop - content.offsetTop;
+
 /* Mobile bottom nav card widths (px), measured on the source: a to-scale scroll strip, one card per section. */
 const MNAV_W = [67.6, 319.15, 239.2, 161.2, 206.7, 124.8, 143, 103.35];
 
@@ -46,7 +55,8 @@ export function RawMaterialsPage({ initialIndex = 0 }: { initialIndex?: number }
     let touched = false;
     const place = () => {
       const el = c.querySelector<HTMLElement>(`#${IDS[initialIndex]}`);
-      if (!touched && el) c.scrollTop = el.offsetTop - c.offsetTop;
+      const sc = scrollerOf(c);
+      if (!touched && el && sc) sc.scrollTop = sectionTop(el, c);
     };
     const stop = () => {
       touched = true;
@@ -108,38 +118,45 @@ export function RawMaterialsPage({ initialIndex = 0 }: { initialIndex?: number }
   /* ---- active section from scroll position (native scroller, no smooth-scroll lib) ---- */
   const onScroll = useCallback(() => {
     const c = contentRef.current;
-    if (!c) return;
-    const probe = c.scrollTop + c.clientHeight * 0.35;
+    const sc = scrollerOf(c);
+    if (!c || !sc) return;
+    const probe = sc.scrollTop + sc.clientHeight * 0.35;
     let idx = 0;
     IDS.forEach((id, i) => {
       const el = c.querySelector<HTMLElement>(`#${id}`);
-      if (el && el.offsetTop - c.offsetTop <= probe) idx = i;
+      if (el && sectionTop(el, c) <= probe) idx = i;
     });
     setActive((a) => (a === idx ? a : idx));
     /* scroll-progress dot: top = (100% - 32px) * progress + 16px, as on the source nav */
     const sec = c.querySelector<HTMLElement>(`#${IDS[idx]}`);
     const dot = dotRefs.current[idx];
     if (sec && dot) {
-      const start = sec.offsetTop - c.offsetTop;
-      const range = Math.max(1, sec.offsetHeight - c.clientHeight);
-      const p = Math.min(1, Math.max(0, (c.scrollTop - start) / range));
+      const start = sectionTop(sec, c);
+      const range = Math.max(1, sec.offsetHeight - sc.clientHeight);
+      const p = Math.min(1, Math.max(0, (sc.scrollTop - start) / range));
       dot.style.top = `calc((100% - 32px) * ${p} + 16px)`;
     }
     /* mobile bottom nav follows the page scroll (unless the visitor is dragging the strip) */
     const m = mnavRef.current;
     if (m && !mnavDriving.current) {
-      const total = Math.max(1, c.scrollHeight - c.clientHeight);
-      m.scrollLeft = (m.scrollWidth - m.clientWidth) * Math.min(1, Math.max(0, c.scrollTop / total));
+      const total = Math.max(1, sc.scrollHeight - sc.clientHeight);
+      m.scrollLeft = (m.scrollWidth - m.clientWidth) * Math.min(1, Math.max(0, sc.scrollTop / total));
     }
   }, []);
 
+  /* document scroll (phones/tablets) */
+  useEffect(() => {
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [onScroll]);
+
   /* dragging the bottom nav strip scrolls the page by the same proportion */
   const onMnavScroll = useCallback(() => {
-    const c = contentRef.current;
+    const sc = scrollerOf(contentRef.current);
     const m = mnavRef.current;
-    if (!c || !m || !mnavDriving.current) return;
+    if (!sc || !m || !mnavDriving.current) return;
     const span = Math.max(1, m.scrollWidth - m.clientWidth);
-    c.scrollTop = (m.scrollLeft / span) * (c.scrollHeight - c.clientHeight);
+    sc.scrollTop = (m.scrollLeft / span) * (sc.scrollHeight - sc.clientHeight);
   }, []);
 
   /* ---- sidebar accordion: active item grows to maxHeight (0.5s) ---- */
@@ -159,7 +176,7 @@ export function RawMaterialsPage({ initialIndex = 0 }: { initialIndex?: number }
     const el = c?.querySelector<HTMLElement>(`#${IDS[i]}`);
     if (!c || !el) return;
     mnavDriving.current = false;
-    gsap.to(c, { scrollTo: { y: el.offsetTop - c.offsetTop, autoKill: true }, duration: 1.2, ease: "power2.inOut" });
+    gsap.to(isDocScroll() ? window : c, { scrollTo: { y: sectionTop(el, c), autoKill: true }, duration: 1.2, ease: "power2.inOut" });
   };
 
   const navItems = (mobile: boolean) =>
