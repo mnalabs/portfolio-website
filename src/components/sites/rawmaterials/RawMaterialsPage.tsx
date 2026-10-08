@@ -24,6 +24,9 @@ const IDS = NAV.map((n) => n.id);
 
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
+/* Mobile bottom nav card widths (px), measured on the source: a to-scale scroll strip, one card per section. */
+const MNAV_W = [67.6, 319.15, 239.2, 161.2, 206.7, 124.8, 143, 103.35];
+
 export function RawMaterialsPage({ initialIndex = 0 }: { initialIndex?: number }) {
   const contentRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLElement>(null);
@@ -32,6 +35,8 @@ export function RawMaterialsPage({ initialIndex = 0 }: { initialIndex?: number }
   const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const labelRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const dotRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const mnavRef = useRef<HTMLDivElement>(null);
+  const mnavDriving = useRef(false); /* true while the visitor drags the bottom nav strip */
   const [active, setActive] = useState(initialIndex);
 
   /* open at the routed section (instant, before the intro reveals the page) */
@@ -120,6 +125,21 @@ export function RawMaterialsPage({ initialIndex = 0 }: { initialIndex?: number }
       const p = Math.min(1, Math.max(0, (c.scrollTop - start) / range));
       dot.style.top = `calc((100% - 32px) * ${p} + 16px)`;
     }
+    /* mobile bottom nav follows the page scroll (unless the visitor is dragging the strip) */
+    const m = mnavRef.current;
+    if (m && !mnavDriving.current) {
+      const total = Math.max(1, c.scrollHeight - c.clientHeight);
+      m.scrollLeft = (m.scrollWidth - m.clientWidth) * Math.min(1, Math.max(0, c.scrollTop / total));
+    }
+  }, []);
+
+  /* dragging the bottom nav strip scrolls the page by the same proportion */
+  const onMnavScroll = useCallback(() => {
+    const c = contentRef.current;
+    const m = mnavRef.current;
+    if (!c || !m || !mnavDriving.current) return;
+    const span = Math.max(1, m.scrollWidth - m.clientWidth);
+    c.scrollTop = (m.scrollLeft / span) * (c.scrollHeight - c.clientHeight);
   }, []);
 
   /* ---- sidebar accordion: active item grows to maxHeight (0.5s) ---- */
@@ -138,6 +158,7 @@ export function RawMaterialsPage({ initialIndex = 0 }: { initialIndex?: number }
     const c = contentRef.current;
     const el = c?.querySelector<HTMLElement>(`#${IDS[i]}`);
     if (!c || !el) return;
+    mnavDriving.current = false;
     gsap.to(c, { scrollTo: { y: el.offsetTop - c.offsetTop, autoKill: true }, duration: 1.2, ease: "power2.inOut" });
   };
 
@@ -149,19 +170,22 @@ export function RawMaterialsPage({ initialIndex = 0 }: { initialIndex?: number }
           if (!mobile) itemRefs.current[i] = el;
         }}
         className={`nav-item ${n.tone === "white" ? "bg-white fg-dark" : tone(n.tone)} ${active === i ? "active" : ""}`}
+        style={mobile ? { width: MNAV_W[i] } : undefined}
         onClick={() => goTo(i)}
         aria-current={active === i ? "true" : undefined}
       >
         <span className="nav-item-number">0{i}</span>
-        <span className="nav-item-text">
-          <span
-            ref={(el) => {
-              if (!mobile) labelRefs.current[i] = el;
-            }}
-          >
-            {n.label}
+        {(!mobile || i > 0) && (
+          <span className="nav-item-text">
+            <span
+              ref={(el) => {
+                if (!mobile) labelRefs.current[i] = el;
+              }}
+            >
+              {n.label}
+            </span>
           </span>
-        </span>
+        )}
         {!mobile && (
           <span
             className="nav-dot"
@@ -182,9 +206,28 @@ export function RawMaterialsPage({ initialIndex = 0 }: { initialIndex?: number }
         {navItems(false)}
       </nav>
       <nav className="rm-mnav" aria-label="Sections">
-        {navItems(true)}
+        <div
+          className="mnav-scroll"
+          ref={mnavRef}
+          onTouchStart={() => {
+            mnavDriving.current = true;
+          }}
+          onScroll={onMnavScroll}
+        >
+          <div className="mnav-items">{navItems(true)}</div>
+        </div>
       </nav>
-      <div className="rm-content" ref={contentRef} onScroll={onScroll}>
+      <div
+        className="rm-content"
+        ref={contentRef}
+        onScroll={onScroll}
+        onTouchStart={() => {
+          mnavDriving.current = false;
+        }}
+        onWheel={() => {
+          mnavDriving.current = false;
+        }}
+      >
         <Landing />
         <SectionOne />
         <SectionTwo />

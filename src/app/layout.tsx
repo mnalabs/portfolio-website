@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter_Tight } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -12,9 +13,13 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const interTight = Inter_Tight({
-  variable: "--font-rm",
-  subsets: ["latin"],
+/* Tanker (Indian Type Foundry), font file supplied by the site owner. Single heavy cut; the 400-700 range
+   keeps browsers from synthesizing a second bold when headings ask for 600. */
+const tanker = localFont({
+  src: "./fonts/Tanker-Regular.otf",
+  variable: "--font-tanker",
+  weight: "400 700",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -30,7 +35,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${interTight.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${tanker.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

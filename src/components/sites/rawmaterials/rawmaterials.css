@@ -9,7 +9,7 @@
   --blue: #6bb1ff;    /* section 4 Skills: sky */
   --red: #5ddfd7;     /* section 5 Open: teal */
   --yellow: #0e396a;  /* section 6 Contact: deep blue */
-  --green: #2f7d32;   /* section 7 Notes: deep green */
+  --green: #4d3589;   /* section 7 Notes: plum (Calendly --color-plum) */
   --white: #ffffff;
   --gutter: 48px;
   position: fixed;
@@ -17,14 +17,15 @@
   overflow: hidden;
   background: var(--cream);
   color: var(--ink);
-  font-family: var(--font-rm), "Inter Tight", sans-serif;
-  font-feature-settings: "ss02" on;
+  font-family: var(--font-geist-sans), "Geist", system-ui, "Segoe UI", Roboto, sans-serif;
   transition: background-color 0.5s ease-in-out;
 }
 .rm *,
 .rm *::before,
 .rm *::after { box-sizing: border-box; }
 .rm h1, .rm h2, .rm h3, .rm h4, .rm p { margin: 0; font-weight: 400; }
+.rm h1, .rm h2, .rm h3, .rm h4 { font-family: var(--font-tanker), var(--font-geist-sans), system-ui, sans-serif; font-weight: 600; }
+.rm .section-divider h2 { font-family: var(--font-geist-sans), "Geist", system-ui, sans-serif; font-weight: 500; }
 .rm button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; text-align: left; }
 
 .rm .bg-cream { background: var(--cream); } .rm .bg-orange { background: var(--orange); }
@@ -51,10 +52,12 @@
 .rm-nav .nav-dot { position: absolute; right: 8px; top: 16px; width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: 0; transition: opacity 0.3s ease-in-out; }
 .rm-nav .nav-item.active .nav-dot { opacity: 1; }
 
-.rm-mnav { display: none; position: fixed; left: 0; bottom: 0; width: 100%; height: 104px; z-index: 1200; background: var(--cream); border-top: 1px solid var(--ink); padding: 16px 0 16px 16px; gap: 8px; overflow-x: auto; scrollbar-width: none; align-items: stretch; }
-.rm-mnav::-webkit-scrollbar { display: none; }
-.rm-mnav .nav-item { flex: 0 0 auto; width: 64px; height: 100%; border-radius: 16px; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; transition: width 0.5s ease-out; }
-.rm-mnav .nav-item.active { width: 220px; }
+/* mobile bottom nav: measured on the source (.mobile-navigation) */
+.rm-mnav { display: none; position: fixed; left: 0; bottom: 0; width: 100vw; z-index: 1200; flex-direction: column; align-items: center; justify-content: center; background: var(--cream); border-top: 1px solid var(--ink); }
+.rm-mnav .mnav-scroll { flex-shrink: 0; margin: 16px 0; width: 100vw; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; }
+.rm-mnav .mnav-scroll::-webkit-scrollbar { display: none; }
+.rm-mnav .mnav-items { display: inline-flex; flex-direction: row; flex-shrink: 0; align-items: center; justify-content: flex-start; gap: 12px; height: 56px; margin: 0 4.2vw; padding: 0; }
+.rm-mnav .nav-item { position: relative; flex: 0 0 auto; height: 100%; margin: 0; padding: 0; border: 1px solid transparent; border-radius: 16px; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; cursor: pointer; overflow: hidden; transition: width 0.5s ease-out; }
 .rm-mnav .nav-item-number { font-size: 8px; margin: 8px 0 0 8px; }
 .rm-mnav .nav-item-text { font-size: 12px; margin: 0 0 8px 8px; white-space: nowrap; }
 
@@ -72,7 +75,7 @@
 .rm .landing-header { display: flex; justify-content: space-between; margin: 48px var(--gutter) 24px; font-size: 1.7vw; line-height: 1; }
 .rm .landing-header p { font-size: inherit; line-height: inherit; }
 .rm .landing-logo { position: absolute; left: var(--gutter); right: var(--gutter); top: 24%; bottom: 0; display: flex; align-items: flex-end; justify-content: center; }
-.rm .logo-ph { width: 100%; height: 100%; position: relative; display: grid; place-items: end center; overflow: hidden; white-space: nowrap; color: var(--ink); font-size: 27vw; line-height: 0.78; letter-spacing: -0.05em; font-weight: 600; transform-origin: 50% 100%; }
+.rm .logo-ph { width: 100%; height: 100%; position: relative; display: grid; place-items: end center; overflow: hidden; white-space: nowrap; color: var(--ink); font-size: 39vw; line-height: 0.78; letter-spacing: -0.02em; font-weight: 600; font-family: var(--font-tanker), var(--font-geist-sans), system-ui, sans-serif; transform-origin: 50% 100%; }
 
 /* divider pill */
 .rm .section-divider { height: 32px; border-radius: 16px; display: flex; align-items: center; justify-content: space-between; padding: 0 48px; font-size: 12px; letter-spacing: -0.01em; line-height: 12px; }
@@ -332,3 +335,7 @@
 
 .rm a.people-card, .rm a.subscribe, .rm .career-row a { color: inherit; text-decoration: none; }
 .rm a.subscribe { display: flex; }
+
+/* wordmark sizing: fills ~88% of the landing card width (Tanker is narrow) */
+@media only screen and (max-width: 1023px) { .rm .logo-ph { font-size: 44vw; } }
+@media only screen and (max-width: 767px) { .rm .logo-ph { font-size: 45vw; } }
