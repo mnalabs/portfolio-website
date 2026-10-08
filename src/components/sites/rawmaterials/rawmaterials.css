@@ -59,7 +59,7 @@
 .rm-mnav .mnav-items { display: inline-flex; flex-direction: row; flex-shrink: 0; align-items: center; justify-content: flex-start; gap: 12px; height: 56px; margin: 0 4.2vw; padding: 0; }
 .rm-mnav .nav-item { position: relative; flex: 0 0 auto; height: 100%; margin: 0; padding: 0; border: 1px solid transparent; border-radius: 16px; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; cursor: pointer; overflow: hidden; transition: width 0.5s ease-out; }
 .rm-mnav .nav-item-number { font-size: 8px; margin: 8px 0 0 8px; }
-.rm-mnav .nav-item-text { font-size: 12px; margin: 0 0 8px 8px; white-space: nowrap; }
+.rm-mnav .nav-item-text { font-size: 15.6px; margin: 0 0 8px 8px; white-space: nowrap; } /* source is 12px; +30% */
 
 /* ---------- content scroller ---------- */
 .rm-content { position: absolute; top: 0; left: 118px; height: 100vh; width: calc(100% - 262px); padding: 24px 36px 0 112px; overflow-x: hidden; overflow-y: auto; z-index: 900; box-sizing: content-box; }
