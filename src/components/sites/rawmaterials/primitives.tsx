@@ -7,12 +7,12 @@ export type Tone = "orange" | "purple" | "black" | "blue" | "red" | "yellow" | "
 
 export const TONES: Record<Tone, { fg: "light" | "dark" }> = {
   orange: { fg: "light" },
-  purple: { fg: "light" },
+  purple: { fg: "dark" },
   black: { fg: "light" },
-  blue: { fg: "light" },
-  red: { fg: "light" },
-  yellow: { fg: "dark" },
-  green: { fg: "dark" },
+  blue: { fg: "dark" },
+  red: { fg: "dark" },
+  yellow: { fg: "light" },
+  green: { fg: "light" },
 };
 
 export function tone(t: Tone) {
@@ -113,9 +113,9 @@ export function Marquee({ text }: { text: string }) {
 export function BigDivider({ t, text, variant }: { t: Tone; text: string; variant?: "alt-a" | "alt-b" }) {
   return (
     <div className={`block big-divider ${variant ?? ""} ${tone(t)}`}>
-      <span className="tag">(Raw)</span>
+      <span className="tag">(Design)</span>
       <h2 className="t">{text}</h2>
-      <span className="tag">(Materials)</span>
+      <span className="tag">(Build)</span>
     </div>
   );
 }

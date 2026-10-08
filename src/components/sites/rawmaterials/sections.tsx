@@ -1,7 +1,6 @@
 import {
   ArrowDivider,
   BigDivider,
-  Block,
   CaseCard,
   Labels,
   Marquee,
@@ -22,35 +21,33 @@ export type NavEntry = {
 
 /** maxHeight values = active-state heights measured on the source sidebar. */
 export const NAV: NavEntry[] = [
-  { id: "top", label: "Brand Name", tone: "white", maxHeight: 104 },
-  { id: "one", label: "Section One", tone: "orange", maxHeight: 491 },
-  { id: "two", label: "Section Two", tone: "purple", maxHeight: 368 },
-  { id: "three", label: "Section Three", tone: "black", maxHeight: 248 },
-  { id: "four", label: "Section Four", tone: "blue", maxHeight: 318 },
-  { id: "five", label: "Section Five", tone: "red", maxHeight: 192 },
-  { id: "six", label: "Section Six", tone: "yellow", maxHeight: 220 },
-  { id: "seven", label: "Section Seven", tone: "green", maxHeight: 159 },
+  { id: "top", label: "MNA.", tone: "white", maxHeight: 104 },
+  { id: "one", label: "Hello", tone: "orange", maxHeight: 491 },
+  { id: "two", label: "Approach", tone: "purple", maxHeight: 368 },
+  { id: "three", label: "Work", tone: "black", maxHeight: 248 },
+  { id: "four", label: "Skills", tone: "blue", maxHeight: 318 },
+  { id: "five", label: "Open", tone: "red", maxHeight: 192 },
+  { id: "six", label: "Contact", tone: "yellow", maxHeight: 220 },
+  { id: "seven", label: "Notes", tone: "green", maxHeight: 159 },
 ];
 
-const LOREM = "Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor.";
-const LOREM_LONG =
-  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim.";
+const LOREM = "Designing and building digital products that look sharp and work properly.";
 
 const STATEMENTS = [
-  "Lorem ipsum dolor sit amet consectetur elit.",
-  "Eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis.",
-  "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat.",
+  "Great products start with clear thinking.",
+  "Design and engineering belong together, so I own both and ship work that holds up.",
+  "Details are where trust is built, so I sweat the spacing, motion and performance too.",
 ];
-const STATEMENT_ONE_SHORT = "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor.";
+const STATEMENT_ONE_SHORT = "Design tools and code are one craft. I move between both without losing intent.";
 const STATEMENT_ONE_LONG =
-  "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna.";
+  "Notes on design, development and the small decisions behind good products. Writing is coming soon, check back.";
 
 function Statements({ t, label, n, lines = STATEMENTS }: { t: Tone; label: string; n: string; lines?: string[] }) {
   return (
     <div className={`block text-block ${tone(t)}`}>
       {lines.map((l, i) => (
         <h2 className="t" key={i}>
-          <span className="num-chip" style={{ color: "var(--ink)" }}>
+          <span className="num-chip">
             0{i + 1}
           </span>
           {l}
@@ -62,9 +59,9 @@ function Statements({ t, label, n, lines = STATEMENTS }: { t: Tone; label: strin
 }
 
 const MISSION_TEXTS = [
-  "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore.",
-  "Eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.",
-  "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+  "Help founders and teams turn rough ideas into products people understand on first use and keep using.",
+  "Design interfaces with intention, build them in modern web technology, and keep refining them after launch using real feedback from real people, every single week.",
+  "Keep things simple, fast and accessible so the product works for everyone, on every device, everywhere.",
 ];
 
 function Mission({ rows }: { rows: number }) {
@@ -73,7 +70,7 @@ function Mission({ rows }: { rows: number }) {
       <div className="rows">
         {Array.from({ length: rows }).map((_, i) => (
           <div className="row" key={i}>
-            <div className="cell-label">{i === 0 ? "Label placeholder" : ""}</div>
+            <div className="cell-label">{["My mission", "Focus", "Promise"][i] ?? ""}</div>
             <div className="cell-text">
               <span className="num-chip">0{i + 1}</span>
               <div>{MISSION_TEXTS[i % MISSION_TEXTS.length]}</div>
@@ -90,19 +87,19 @@ export function Landing() {
     <div className="landing" id="top">
       <div className="landing-header">
         <p>
-          Brand
+          MNA.
           <br />
-          Name
+          Portfolio
         </p>
         <p>
-          Tagline goes
+          Product Designer
           <br />
-          right here
+          &amp; Developer
         </p>
       </div>
       <div className="landing-logo">
-        <div className="logo-ph" data-logo aria-label="Logo placeholder" role="img">
-          LOGO
+        <div className="logo-ph" data-logo aria-label="MNA." role="img">
+          MNA.
         </div>
       </div>
     </div>
@@ -113,50 +110,53 @@ export function SectionOne() {
   const t: Tone = "orange";
   return (
     <section className="rm-section" id="one">
-      <SectionDivider t={t} name="One" index="01" />
-      <SectionIntro t={t} num="01" name="One" />
+      <SectionDivider t={t} name="Hello" index="01" />
+      <SectionIntro t={t} num="01" name="Hello" />
       <div className="block title-block">
         <div className="titles">
-          <h2 className="t">Title Line</h2>
+          <h2 className="t">Hello,</h2>
           <h2 className="t right" style={{ color: "var(--orange)" }}>
-            Second
+            I&apos;m
           </h2>
           <h2 className="t" style={{ color: "var(--orange)" }}>
-            Third Line
+            MNA.
           </h2>
         </div>
         <p className="small">{LOREM}</p>
-        <Labels title="One" count="01 / 02" />
+        <Labels title="Hello" count="01 / 02" />
       </div>
-      <Statements t={t} label="One" n="01 / 03" />
+      <Statements t={t} label="Hello" n="01 / 03" />
       <div className="block" style={{ position: "relative" }}>
         <Mission rows={3} />
-        <Labels title="One" count="01 / 04" />
+        <Labels title="Hello" count="01 / 04" />
       </div>
       <div className={`block wins-block ${tone(t)}`}>
         <Ph label="Video" light />
-        <h2 className="wins">Big Words</h2>
-        <Labels title="One" count="01 / 05" light />
+        <h2 className="wins">Good Work</h2>
+        <Labels title="Hello" count="01 / 05" light />
       </div>
-      <ArrowDivider t={t} text={"Lorem ipsum dolor sit amet, consectetur adipiscing elit"} />
+      <ArrowDivider t={t} text="Design and build products people actually enjoy using" />
       <div className="people-row">
-        {["Role Title One", "Role Title Two", "Role Title Three"].map((r, i) => (
+        {["Step One", "Step Two", "Step Three"].map((r, i) => (
           <div className="people-card" key={r}>
             <h3>{r}</h3>
             <Ph label="Video" />
-            <h4 style={{ color: "var(--orange)" }}>Person {i + 1}</h4>
+            <h4 style={{ color: "var(--orange)" }}>{["Design", "Build", "Ship"][i]}</h4>
           </div>
         ))}
       </div>
-      <Marquee text={LOREM} />
+      <Marquee text="MNA. — Product Designer &amp; Developer — Open to new projects —" />
       <div className="quotes">
-        {["Client One", "Client Two"].map((c) => (
-          <div className="block quote bg-black fg-light" key={c}>
+        {[
+          ["Principle 01", "Simple beats clever. If a feature needs a manual, it needs another round of design before it ships to anyone."],
+          ["Principle 02", "Ship early and learn fast. Real feedback from real users beats a perfect plan made in isolation, every time."],
+        ].map(([h, q]) => (
+          <div className="block quote bg-black fg-light" key={h}>
             <div>
-              <Ph label="Logo" className="logo-sm" light />
-              <p style={{ marginTop: 12, opacity: 0.7 }}>Project description</p>
+              <p>{h}</p>
+              <p style={{ marginTop: 12, opacity: 0.7 }}>MNA.</p>
             </div>
-            <blockquote>“{LOREM_LONG}”</blockquote>
+            <blockquote>{q}</blockquote>
           </div>
         ))}
       </div>
@@ -167,31 +167,31 @@ export function SectionOne() {
 export function SectionTwo() {
   const t: Tone = "purple";
   const tabs = [
-    { title: "Tab One", body: LOREM_LONG },
-    { title: "Tab Two", body: LOREM },
-    { title: "Tab Three", body: LOREM_LONG },
+    { title: "Discover", body: "We start by listening. Goals, users and constraints get mapped before a single pixel is drawn, so the work solves the right problem." },
+    { title: "Design", body: "Sketches become prototypes, prototypes become polished interfaces. Every choice is tested against the goal and the people using it." },
+    { title: "Deliver", body: "Production-ready code, clean handoff and honest iteration. Launch is the start of learning, not the end of the project." },
   ];
   const cap = [
-    ["Group One", "Capability line one", "Capability line two", "Capability line three"],
-    ["Group Two", "Capability line one", "Capability line two", "Capability line three"],
-    ["Group Three", "Capability line one", "Capability line two", "Capability line three"],
+    ["Design", "Product Design", "Design Systems", "Prototyping"],
+    ["Product", "Product Thinking", "User Research", "Roadmapping"],
+    ["Technology", "Front-End Development", "Next.js & React", "Accessibility"],
   ];
   return (
     <section className="rm-section" id="two">
-      <SectionDivider t={t} name="Two" index="02" />
-      <SectionIntro t={t} num="02" name="Two" />
+      <SectionDivider t={t} name="Approach" index="02" />
+      <SectionIntro t={t} num="02" name="Approach" />
       <div className={`block media-block ${tone(t)}`} style={{ aspectRatio: "1163 / 288" }}>
         <Ph label="Image" light className="" />
         <Ph label="Image" light />
-        <Labels title="Two" count="02 / 02" light />
+        <Labels title="Approach" count="02 / 02" light />
       </div>
       <Mission rows={3} />
-      <BigDivider t={t} text="Big Line One" />
-      <BigDivider t={t} text="Big Line Two" variant="alt-a" />
-      <BigDivider t={t} text="Big Line Three" variant="alt-b" />
-      <ArrowDivider t={t} text="Lorem ipsum dolor sit amet consectetur" />
+      <BigDivider t={t} text="Clear Thinking" />
+      <BigDivider t={t} text="Careful Craft" variant="alt-a" />
+      <BigDivider t={t} text="Honest Delivery" variant="alt-b" />
+      <ArrowDivider t={t} text="A simple process that keeps projects moving" />
       <Tabs items={tabs} />
-      <BigDivider t={t} text="Big Line Four" />
+      <BigDivider t={t} text="Always Learning" />
       <div className="caps">
         {cap.map(([h, ...li], i) => (
           <div className="cap" key={h}>
@@ -214,19 +214,19 @@ export function SectionTwo() {
 export function SectionThree() {
   const t: Tone = "black";
   const cases: [string, string, boolean][] = [
-    ["Project One", "Category · Short description placeholder", true],
-    ["Project Two", "Category · Short description placeholder", true],
-    ["Project Three", "Category · Short description placeholder", true],
-    ["Project Four", "Category · Short description placeholder", true],
-    ["Project Five", "Category · Contact to see", false],
-    ["Project Six", "Coming soon", false],
-    ["Project Seven", "Coming soon", false],
-    ["Project Eight", "Coming soon", false],
+    ["Case Study 01", "Product design · Coming soon", true],
+    ["Case Study 02", "Front-end build · Coming soon", true],
+    ["Case Study 03", "Design system · Coming soon", true],
+    ["Case Study 04", "Prototype · Coming soon", true],
+    ["Case Study 05", "Coming soon", false],
+    ["Case Study 06", "Coming soon", false],
+    ["Case Study 07", "Coming soon", false],
+    ["Case Study 08", "Coming soon", false],
   ];
   return (
     <section className="rm-section" id="three">
-      <SectionDivider t={t} name="Three" index="03" />
-      <SectionIntro t={t} num="03" name="Three" />
+      <SectionDivider t={t} name="Work" index="03" />
+      <SectionIntro t={t} num="03" name="Work" />
       {cases.map(([n, m, c]) => (
         <CaseCard key={n} name={n} meta={m} clickable={c} />
       ))}
@@ -237,26 +237,26 @@ export function SectionThree() {
 export function SectionFour() {
   const t: Tone = "blue";
   const tabs = [
-    { title: "Tab One", body: LOREM_LONG },
-    { title: "Tab Two", body: LOREM },
-    { title: "Tab Three", body: LOREM_LONG },
+    { title: "Design", body: "Interface design, design systems, prototyping and motion, built in Figma and refined in the browser." },
+    { title: "Code", body: "React, Next.js, TypeScript and modern CSS, with a focus on performance, accessibility and maintainable structure." },
+    { title: "Product", body: "Product thinking, user flows and rapid iteration, from first sketch through to a live, measured release." },
   ];
   return (
     <section className="rm-section" id="four">
-      <SectionDivider t={t} name="Four" index="04" />
-      <SectionIntro t={t} num="04" name="Four" />
+      <SectionDivider t={t} name="Skills" index="04" />
+      <SectionIntro t={t} num="04" name="Skills" />
       <div className={`block media-full rotate ${tone(t)}`}>
         <Ph label="Video" light />
-        <Labels title="Four" count="04 / 02" light />
+        <Labels title="Skills" count="04 / 02" light />
       </div>
-      <Statements t={t} label="Four" n="04 / 03" lines={[STATEMENT_ONE_SHORT]} />
+      <Statements t={t} label="Skills" n="04 / 03" lines={[STATEMENT_ONE_SHORT]} />
       <div className="block talent-title">
-        <h2>Heading Words</h2>
+        <h2>Tools &amp; Craft</h2>
         <Ph label="Image" />
         <Ph label="Image" />
         <Ph label="Image" />
       </div>
-      <ArrowDivider t={t} text="Short divider text" />
+      <ArrowDivider t={t} text="The tools I work with" />
       <Tabs items={tabs} />
     </section>
   );
@@ -265,29 +265,29 @@ export function SectionFour() {
 export function SectionFive() {
   const t: Tone = "red";
   const jobs = [
-    ["Job Title One", "Department placeholder"],
-    ["Job Title Two", "Department placeholder"],
-    ["Job Title Three", "Department placeholder"],
+    ["Product Design", "UI, UX and design systems"],
+    ["Front-End Development", "React, Next.js and TypeScript"],
+    ["Prototyping & Motion", "Interactive prototypes and animation"],
   ];
   return (
     <section className="rm-section" id="five">
-      <SectionDivider t={t} name="Five" index="05" />
-      <SectionIntro t={t} num="05" name="Five" />
+      <SectionDivider t={t} name="Open" index="05" />
+      <SectionIntro t={t} num="05" name="Open" />
       <div className="block careers-title">
-        {["We", "Are", "Lorem", "Ipsum", "Dolor", "Sit", "Amet", "Elit"].map((w, i) => (
+        {["Open", "For", "New", "Projects", "And", "Fresh", "Ideas", "Always"].map((w, i) => (
           <span key={w} className={`pill ${i % 3 === 2 ? "fill" : ""}`}>
             {w}
           </span>
         ))}
-        <Labels title="Five" count="05 / 02" />
+        <Labels title="Open" count="05 / 02" />
       </div>
-      <ArrowDivider t={t} text="List divider" />
+      <ArrowDivider t={t} text="Available services" />
       <div className="careers-list">
         {jobs.map(([j, d]) => (
           <div className="career-row" key={j} tabIndex={0}>
             <h3>{j}</h3>
             <p>{d}. {LOREM}</p>
-            <span>Apply →</span>
+            <a href="mailto:me.naeem88@gmail.com?subject=Enquiry">Enquire →</a>
           </div>
         ))}
       </div>
@@ -299,25 +299,29 @@ export function SectionSix() {
   const t: Tone = "yellow";
   return (
     <section className="rm-section" id="six">
-      <SectionDivider t={t} name="Six" index="06" />
-      <SectionIntro t={t} num="06" name="Six" />
+      <SectionDivider t={t} name="Contact" index="06" />
+      <SectionIntro t={t} num="06" name="Contact" />
       <div className="block title-block">
         <div className="titles">
-          <h2 className="t">Big</h2>
-          <h2 className="t right">Heading</h2>
-          <h2 className="t">Words.</h2>
+          <h2 className="t">Let&apos;s</h2>
+          <h2 className="t right">Build</h2>
+          <h2 className="t">Together.</h2>
         </div>
-        <Labels title="Six" count="06 / 02" />
+        <Labels title="Contact" count="06 / 02" />
       </div>
       <div className="contact-people">
-        {["Contact One", "Contact Two", "Contact Three"].map((c) => (
-          <div className="people-card" key={c}>
+        {[
+          ["Email", "mailto:me.naeem88@gmail.com"],
+          ["GitHub", "https://github.com/mnalabs"],
+          ["Say hello", "mailto:me.naeem88@gmail.com"],
+        ].map(([c, href]) => (
+          <a className="people-card" key={c} href={href} target={href.startsWith("http") ? "_blank" : undefined} rel="noreferrer">
             <h3>{c}</h3>
-            <Ph label="Video" />
-          </div>
+            <Ph label="" />
+          </a>
         ))}
       </div>
-      <ArrowDivider t={t} text="Short divider text" />
+      <ArrowDivider t={t} text="me.naeem88@gmail.com" />
     </section>
   );
 }
@@ -326,15 +330,15 @@ export function SectionSeven() {
   const t: Tone = "green";
   return (
     <section className="rm-section" id="seven">
-      <SectionDivider t={t} name="Seven" index="07" />
-      <SectionIntro t={t} num="07" name="Seven" />
-      <Statements t={t} label="Seven" n="07 / 03" lines={[STATEMENT_ONE_LONG]} />
-      <ArrowDivider t={t} text="Subscribe divider text" />
-      <div className="subscribe">
-        <span>SUBSCRIBE</span>
+      <SectionDivider t={t} name="Notes" index="07" />
+      <SectionIntro t={t} num="07" name="Notes" />
+      <Statements t={t} label="Notes" n="07 / 03" lines={[STATEMENT_ONE_LONG]} />
+      <ArrowDivider t={t} text="Stay in the loop" />
+      <a className="subscribe" href="mailto:me.naeem88@gmail.com?subject=Hello">
+        <span>EMAIL ME</span>
         <span className="field" />
         <span>→</span>
-      </div>
+      </a>
     </section>
   );
 }

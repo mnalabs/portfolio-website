@@ -18,8 +18,8 @@ const interTight = Inter_Tight({
 });
 
 export const metadata: Metadata = {
-  title: "Brand Name | Placeholder Studio",
-  description: "Placeholder rebuild of a design-studio homepage",
+  title: "MNA. | Product Designer & Developer",
+  description: "Portfolio of MNA., a product designer and developer building clear, fast and well-crafted digital products.",
 };
 
 export default function RootLayout({

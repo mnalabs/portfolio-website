@@ -15,20 +15,37 @@ import {
   SectionTwo,
 } from "./sections";
 import { tone } from "./primitives";
+import { ROUTE_SLUGS } from "./routes";
 import "./rawmaterials.css";
 
 gsap.registerPlugin(ScrollToPlugin);
 
 const IDS = NAV.map((n) => n.id);
 
-export function RawMaterialsPage() {
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
+export function RawMaterialsPage({ initialIndex = 0 }: { initialIndex?: number }) {
   const contentRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const labelRefs = useRef<(HTMLSpanElement | null)[]>([]);
-  const [active, setActive] = useState(0);
+  const dotRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const [active, setActive] = useState(initialIndex);
+
+  /* open at the routed section (instant, before the intro reveals the page) */
+  useEffect(() => {
+    const c = contentRef.current;
+    const el = c?.querySelector<HTMLElement>(`#${IDS[initialIndex]}`);
+    if (c && el && initialIndex > 0) c.scrollTop = el.offsetTop - c.offsetTop;
+  }, [initialIndex]);
+
+  /* keep the URL in step with the active section */
+  useEffect(() => {
+    const url = `${BASE}/${ROUTE_SLUGS[active]}${active ? "/" : ""}`;
+    if (window.location.pathname !== url) window.history.replaceState(null, "", url);
+  }, [active]);
 
   /* ---- intro: bar draws, panel retracts, logo pill morphs, content rises ---- */
   useEffect(() => {
@@ -72,6 +89,15 @@ export function RawMaterialsPage() {
       if (el && el.offsetTop - c.offsetTop <= probe) idx = i;
     });
     setActive((a) => (a === idx ? a : idx));
+    /* scroll-progress dot: top = (100% - 32px) * progress + 16px, as on the source nav */
+    const sec = c.querySelector<HTMLElement>(`#${IDS[idx]}`);
+    const dot = dotRefs.current[idx];
+    if (sec && dot) {
+      const start = sec.offsetTop - c.offsetTop;
+      const range = Math.max(1, sec.offsetHeight - c.clientHeight);
+      const p = Math.min(1, Math.max(0, (c.scrollTop - start) / range));
+      dot.style.top = `calc((100% - 32px) * ${p} + 16px)`;
+    }
   }, []);
 
   /* ---- sidebar accordion: active item grows to maxHeight (0.5s) ---- */
@@ -114,7 +140,14 @@ export function RawMaterialsPage() {
             {n.label}
           </span>
         </span>
-        {!mobile && <span className="nav-dot" />}
+        {!mobile && (
+          <span
+            className="nav-dot"
+            ref={(el) => {
+              dotRefs.current[i] = el;
+            }}
+          />
+        )}
       </button>
     ));
 
