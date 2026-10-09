@@ -339,13 +339,3 @@
 /* wordmark sizing: fills ~88% of the landing card width (Tanker is narrow) */
 @media only screen and (max-width: 1023px) { .rm .logo-ph { font-size: 44vw; } }
 @media only screen and (max-width: 767px) { .rm .logo-ph { font-size: 45vw; } }
-
-/* ---------- phones/tablets: the document scrolls (lets iOS collapse the browser toolbar) ---------- */
-@media only screen and (max-width: 1023px) {
-  .rm { position: relative; inset: auto; width: 100%; min-height: 100vh; overflow-x: clip; overflow-y: visible; }
-  .rm-transition { position: fixed; }
-  .rm-content { position: relative; top: auto; left: 0; height: auto; overflow-x: clip; overflow-y: visible; }
-}
-
-/* nav item names use Tanker (desktop sidebar + mobile bottom nav) */
-.rm-nav .nav-item-text, .rm-mnav .nav-item-text { font-family: var(--font-tanker), var(--font-geist-sans), system-ui, sans-serif; font-weight: 600; }
